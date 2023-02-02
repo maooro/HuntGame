@@ -1,0 +1,49 @@
+body {
+    height: 100%;
+}
+
+h1 {
+    text-align: center;
+}
+
+table {
+    width: 300px !important;
+    height: 300px !important;
+    margin: auto;
+}
+
+tr {
+    margin: auto !important;
+}
+
+td {
+    /* border-bottom-width: 0px !important; */
+    border: 1px solid black !important;
+}
+
+td:after {
+    content: '';
+}
+
+.isFood {
+    background-color: #dc3545 !important;
+    border-radius: 50%;
+}
+
+.isSnake {
+    background-color: #668335 !important;
+    border-radius: 10px;
+
+}
+
+.commands {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.dirCtrl * {
+    color: black;
+    text-align: center;
+}
