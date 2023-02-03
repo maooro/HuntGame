@@ -4,6 +4,7 @@ const container = document.querySelector(".container");
 const startBtn = document.querySelector(".start");
 const stopBtn = document.querySelector(".stop");
 const score = document.querySelector("#score");
+const lose = document.querySelector(".commands h1");
 
 //interval
 var movInterval;
@@ -39,6 +40,9 @@ class Dot {
 
 const food = new Dot();
 const ekans = new Dot();
+var bombs = new Array();
+bombs.push(new Dot());
+console.log(bombs);
 //inserire le bombe da evitare, per non morire
 
 var matrix = new Array(x);
@@ -60,12 +64,21 @@ const render = () => {
         body.appendChild(row);
         for (let j = 0; j < y; j++) {
             const col = document.createElement("td");
-            //const colText = document.createTextNode(`${matrix[j][i]}`)
-            // food
-            if (i == food.getY() && j == food.getX()) col.classList.add("isFood");
+            //food
+            if (i == food.getY() && j == food.getX()) {
+                col.classList.add("isFood");
+            }
             //ekans
-            else if (i == ekans.getY() && j == ekans.getX()) col.classList.add("isSnake");
-            //col.appendChild(colText);
+            else if (i == ekans.getY() && j == ekans.getX()) {
+                col.classList.add("isSnake");
+            }
+            //bomb
+            else {
+                for (let b = 0; b < bombs.length; b++) {
+                    if (i == bombs[b].getY() && j == bombs[b].getX())
+                        col.classList.add("isBomb");
+                }
+            }
             row.appendChild(col);
             table.appendChild(body);
         }
@@ -75,6 +88,9 @@ const render = () => {
 }
 
 startBtn.addEventListener("click", () => {
+    container.classList.remove("loser");
+    lose.classList.remove("loser");
+    bombs = [];
     food.randomize();
     ekans.randomize();
     render();
@@ -105,37 +121,49 @@ const moveSnake = (axis, step) => {
     if (ekans.getX() == food.getX() && ekans.getY() == food.getY()) {
         food.randomize();
         score.innerHTML = parseInt(score.innerHTML) + 10;
+        bombs.push(new Dot());
+    }
+    else {
+        for (let b = 0; b < bombs.length; b++) {
+            if (ekans.getX() == bombs[b].getX() && ekans.getY() == bombs[b].getY()) {
+                stopBtn.click();
+                container.classList.add("loser");
+                lose.classList.add("loser");
+            }
+        }
     }
     render();
 }
 
 document.addEventListener('keydown', (event) => {
-    clearInterval(movInterval);
-    switch (event.code) {
-        case 'ArrowUp':
-            function moveUp() {
-                moveSnake('y', -1);
-            }
-            movInterval = setInterval(moveUp, interval);
-            break;
-        case 'ArrowLeft':
-            function moveLeft() {
-                moveSnake('x', -1);
-            }
-            movInterval = setInterval(moveLeft, interval);
-            break;
-        case 'ArrowRight':
-            function moveRight() {
-                moveSnake('x', 1);
-            }
-            movInterval = setInterval(moveRight, interval);
-            break;
-        case 'ArrowDown':
-            function moveDown() {
-                moveSnake('y', 1);
-            }
-            movInterval = setInterval(moveDown, interval);
-            break;
+    if (!container.classList.contains("loser")) {
+        clearInterval(movInterval);
+        switch (event.code) {
+            case 'ArrowUp':
+                function moveUp() {
+                    moveSnake('y', -1);
+                }
+                movInterval = setInterval(moveUp, interval);
+                break;
+            case 'ArrowLeft':
+                function moveLeft() {
+                    moveSnake('x', -1);
+                }
+                movInterval = setInterval(moveLeft, interval);
+                break;
+            case 'ArrowRight':
+                function moveRight() {
+                    moveSnake('x', 1);
+                }
+                movInterval = setInterval(moveRight, interval);
+                break;
+            case 'ArrowDown':
+                function moveDown() {
+                    moveSnake('y', 1);
+                }
+                movInterval = setInterval(moveDown, interval);
+                break;
+        }
     }
 }, false);
 

@@ -18,7 +18,7 @@ tr {
 
 td {
     /* border-bottom-width: 0px !important; */
-    border: 1px solid black !important;
+    border: 1px solid gainsboro !important;
 }
 
 td:after {
@@ -33,7 +33,18 @@ td:after {
 .isSnake {
     background-color: #668335 !important;
     border-radius: 10px;
+}
 
+.isBomb {
+    background-color: black !important;
+}
+
+.loser {
+    background-color: rgba(0,0,0,0.8);
+}
+
+.loser h2 {
+    display: block;
 }
 
 .commands {
@@ -41,6 +52,16 @@ td:after {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+}
+
+.commands h1 { 
+    color: red;
+    width: 100%;
+    visibility: hidden;
+}
+
+.commands h1.loser {
+    visibility: visible;
 }
 
 .dirCtrl * {
